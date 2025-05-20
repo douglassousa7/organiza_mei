@@ -10,9 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_20_130653) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_20_134346) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "appointments", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.datetime "scheduled_for"
+    t.bigint "user_id", null: false
+    t.bigint "client_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["client_id"], name: "index_appointments_on_client_id"
+    t.index ["user_id"], name: "index_appointments_on_user_id"
+  end
 
   create_table "clients", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -38,5 +50,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_20_130653) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "appointments", "clients"
+  add_foreign_key "appointments", "users"
   add_foreign_key "clients", "users"
 end
