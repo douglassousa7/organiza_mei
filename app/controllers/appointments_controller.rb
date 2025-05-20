@@ -3,8 +3,9 @@ class AppointmentsController < ApplicationController
   before_action :set_appointment, only: %i[show edit update destroy]
 
   def index
-    @appointments = current_user.appointments.includes(:client)
+    @appointments = current_user.appointments.includes(:client).order(scheduled_for: :asc)
   end
+
 
   def show
   end
