@@ -1,0 +1,9 @@
+<h2>Agendamento</h2>
+
+<p><strong>Título:</strong> <%= @appointment.title %></p>
+<p><strong>Data:</strong> <%= @appointment.scheduled_for.strftime("%d/%m/%Y %H:%M") %></p>
+<p><strong>Descrição:</strong> <%= @appointment.description %></p>
+<p><strong>Cliente:</strong> <%= @appointment.client.name %></p>
+
+<%= link_to 'Editar', edit_appointment_path(@appointment) %> |
+<%= link_to 'Voltar', appointments_path %>

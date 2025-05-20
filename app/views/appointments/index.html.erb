@@ -1,0 +1,15 @@
+<h1>Agendamentos</h1>
+
+<%= link_to 'Novo Agendamento', new_appointment_path %>
+
+<ul>
+  <% @appointments.each do |appointment| %>
+    <li>
+      <strong><%= appointment.scheduled_for.strftime("%d/%m/%Y %H:%M") %></strong>
+      <%= appointment.client.name %> | 
+      <%= link_to 'Ver', appointment_path(appointment) %> |
+      <%= link_to 'Editar', edit_appointment_path(appointment) %> |
+      <%= link_to 'Excluir', appointment, method: :delete, data: { confirm: 'Tem certeza?' } %>
+    </li>
+  <% end %>
+</ul>
