@@ -6,7 +6,6 @@ class AppointmentsController < ApplicationController
     @appointments = current_user.appointments.includes(:client).order(scheduled_for: :asc)
   end
 
-
   def show
   end
 
@@ -21,6 +20,9 @@ class AppointmentsController < ApplicationController
     @appointment = current_user.appointments.build(appointment_params)
 
     if @appointment.save
+      # Agenda o job para 1 hora antes do horário agendado
+      ReminderJob.set(wait_until: @appointment.scheduled_for - 1.hour).perform_later(@appointment.id)
+
       redirect_to @appointment, notice: "Agendamento criado com sucesso."
     else
       render :new, status: :unprocessable_entity
