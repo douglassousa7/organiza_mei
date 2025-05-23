@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  cliente: one
+  descricao: MyString
+  data: 2025-05-22
+  status: MyString
+
+two:
+  cliente: two
+  descricao: MyString
+  data: 2025-05-22
+  status: MyString

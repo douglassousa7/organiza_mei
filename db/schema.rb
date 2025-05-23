@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_21_164320) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_23_150641) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -24,6 +24,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_21_164320) do
     t.datetime "updated_at", null: false
     t.index ["client_id"], name: "index_appointments_on_client_id"
     t.index ["user_id"], name: "index_appointments_on_user_id"
+  end
+
+  create_table "atendimentos", force: :cascade do |t|
+    t.bigint "cliente_id", null: false
+    t.string "descricao"
+    t.date "data"
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cliente_id"], name: "index_atendimentos_on_cliente_id"
   end
 
   create_table "clientes", force: :cascade do |t|
@@ -45,6 +55,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_21_164320) do
     t.index ["user_id"], name: "index_clients_on_user_id"
   end
 
+  create_table "notifications", force: :cascade do |t|
+    t.string "user"
+    t.string "message"
+    t.datetime "sent_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -59,5 +77,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_21_164320) do
 
   add_foreign_key "appointments", "clients"
   add_foreign_key "appointments", "users"
+  add_foreign_key "atendimentos", "clientes"
   add_foreign_key "clients", "users"
 end
