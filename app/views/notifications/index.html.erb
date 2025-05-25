@@ -7,6 +7,10 @@
     <div class="border rounded p-4 mb-4 shadow-sm hover:shadow-md transition-shadow">
       <p class="mb-2"><strong class="font-medium">Usuário:</strong> <%= notification.user %></p>
       <p class="mb-2"><strong class="font-medium">Mensagem:</strong> <%= notification.message %></p>
+      
+      <% if notification.description.present? %>
+        <p class="mb-2 text-gray-600"><%= notification.description %></p>
+      <% end %>
 
       <div class="flex items-center justify-between mt-3">
         <% if notification.status == "pendente" %>

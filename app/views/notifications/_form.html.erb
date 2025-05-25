@@ -9,6 +9,11 @@
     <%= form.text_area :message, class: "border rounded p-2 w-full" %>
   </div>
 
+  <div class="mb-4">
+    <%= form.label :description, class: "block font-bold" %>
+    <%= form.text_area :description, class: "border rounded p-2 w-full" %>
+  </div>
+
   <div>
     <%= form.submit "Enviar Notificação", class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" %>
   </div>
