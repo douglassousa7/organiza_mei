@@ -1,18 +1,3 @@
 <h1 class="text-3xl font-bold mb-4">Nova Notificação</h1>
 
-<%= form_with model: @notification, local: true, class: "space-y-4" do |form| %>
-  <div class="mb-4">
-    <%= form.label :user, class: "block text-gray-700" %>
-    <%= form.text_field :user, class: "mt-1 block w-full border border-gray-300 rounded p-2" %>
-  </div>
-
-  <div class="mb-4">
-    <%= form.label :message, class: "block text-gray-700" %>
-    <%= form.text_area :message, class: "mt-1 block w-full border border-gray-300 rounded p-2" %>
-  </div>
-
-  <div class="mt-6">
-    <%= form.submit "Enviar Notificação", 
-          class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded cursor-pointer transition-colors" %>
-  </div>
-<% end %>
+<%= render 'form' %>

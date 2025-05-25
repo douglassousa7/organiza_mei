@@ -1,22 +1,32 @@
 <h1 class="text-2xl font-bold mb-4">Notificações</h1>
 
 <div class="max-w-2xl mx-auto p-4">
-
   <%= link_to "Nova Notificação", new_notification_path, class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-block mb-4" %>
 
   <% @notifications.each do |notification| %>
-    <div class="border rounded p-4 mb-4">
-      <p><strong>Usuário:</strong> <%= notification.user %></p>
-      <p><strong>Mensagem:</strong> <%= notification.message %></p>
+    <div class="border rounded p-4 mb-4 shadow-sm hover:shadow-md transition-shadow">
+      <p class="mb-2"><strong class="font-medium">Usuário:</strong> <%= notification.user %></p>
+      <p class="mb-2"><strong class="font-medium">Mensagem:</strong> <%= notification.message %></p>
 
-      <% if notification.status == "pendente" %>
-        <p class="text-yellow-500">⏳ Pendente</p>
-      <% elsif notification.status == "enviada" %>
-        <p class="text-green-600">✅ Enviada em: <%= l(notification.sent_at, format: :short) %></p>
-      <% else %>
-        <p class="text-gray-500">⚪️ Status desconhecido</p>
-      <% end %>
+      <div class="flex items-center justify-between mt-3">
+        <% if notification.status == "pendente" %>
+          <div class="flex items-center">
+            <span class="text-yellow-500 mr-2">⏳</span>
+            <span class="text-yellow-600 font-medium">Pendente</span>
+          </div>
+          <%= link_to 'Marcar como Enviada', mark_as_sent_notification_path(notification), 
+              method: :patch, 
+              class: "bg-green-500 hover:bg-green-600 text-white font-medium py-1 px-3 rounded text-sm transition-colors",
+              data: { turbo_method: :patch, turbo_confirm: "Tem certeza que deseja marcar como enviada?" } %>
+        <% elsif notification.status == "enviada" %>
+          <div class="flex items-center">
+            <span class="text-green-500 mr-2">✅</span>
+            <span class="text-green-600 font-medium">Enviada em: <%= l(notification.sent_at, format: :short) %></span>
+          </div>
+        <% else %>
+          <span class="text-gray-500">⚪️ Status desconhecido</span>
+        <% end %>
+      </div>
     </div>
   <% end %>
-
 </div>

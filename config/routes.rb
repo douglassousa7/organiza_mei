@@ -2,7 +2,11 @@ require "sidekiq/web"
 
 Rails.application.routes.draw do
   # Rotas de notifications
-  resources :notifications, only: [ :index, :new, :create ]
+  resources :notifications, only: [ :index, :new, :create ] do
+    member do
+      patch :mark_as_sent
+    end
+  end
 
   # Autenticação
   devise_for :users

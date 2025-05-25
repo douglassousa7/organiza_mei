@@ -9,6 +9,7 @@ class NotificationsController < ApplicationController
 
   def create
     @notification = Notification.new(notification_params)
+    @notification.status = "pendente" # Define status padrão
 
     if @notification.save
       # Enfileira o job para enviar a notificação
@@ -19,9 +20,18 @@ class NotificationsController < ApplicationController
     end
   end
 
+  def mark_as_sent
+    @notification = Notification.find(params[:id])
+    if @notification.update(status: "enviada", sent_at: Time.current)
+      redirect_to notifications_path, notice: "Notificação marcada como enviada!"
+    else
+      redirect_to notifications_path, alert: "Erro ao marcar notificação!"
+    end
+  end
+
   private
 
   def notification_params
-    params.require(:notification).permit(:user, :message)
+    params.require(:notification).permit(:user, :message, :status)
   end
 end
