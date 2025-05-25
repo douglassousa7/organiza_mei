@@ -14,10 +14,11 @@
             <span class="text-yellow-500 mr-2">⏳</span>
             <span class="text-yellow-600 font-medium">Pendente</span>
           </div>
-          <%= link_to 'Marcar como Enviada', mark_as_sent_notification_path(notification), 
-              method: :patch, 
-              class: "bg-green-500 hover:bg-green-600 text-white font-medium py-1 px-3 rounded text-sm transition-colors",
-              data: { turbo_method: :patch, turbo_confirm: "Tem certeza que deseja marcar como enviada?" } %>
+          <%= button_to "Marcar como enviada", 
+                mark_as_sent_notification_path(notification), 
+                method: :patch, 
+                class: "bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded",
+                form: { data: { turbo_confirm: "Tem certeza que deseja marcar como enviada?" } } %>
         <% elsif notification.status == "enviada" %>
           <div class="flex items-center">
             <span class="text-green-500 mr-2">✅</span>

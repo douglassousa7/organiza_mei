@@ -1,13 +1,19 @@
 class Notification < ApplicationRecord
+  # Validações
+  validates :user, presence: true
+  validates :message, presence: true
+  validates :status, inclusion: { in: [ "pendente", "enviada" ] }
+
+  # Callbacks
   before_save :set_status
 
   private
 
   def set_status
-    if sent_at.present?
-      self.status = "enviada"
+    self.status = if sent_at.present?
+                   "enviada"
     else
-      self.status = "pendente"
+                   "pendente"
     end
   end
 end

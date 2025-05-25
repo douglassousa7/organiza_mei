@@ -22,11 +22,8 @@ class NotificationsController < ApplicationController
 
   def mark_as_sent
     @notification = Notification.find(params[:id])
-    if @notification.update(status: "enviada", sent_at: Time.current)
-      redirect_to notifications_path, notice: "Notificação marcada como enviada!"
-    else
-      redirect_to notifications_path, alert: "Erro ao marcar notificação!"
-    end
+    @notification.update(sent_at: Time.current)
+    redirect_to notifications_path, notice: "Notificação marcada como enviada."
   end
 
   private
