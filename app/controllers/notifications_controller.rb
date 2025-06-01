@@ -1,12 +1,8 @@
 class NotificationsController < ApplicationController
-  before_action :set_notification, only: [ :show, :edit, :update, :destroy ]
+  before_action :set_notification, only: [ :show, :edit, :update, :destroy, :mark_as_sent ]
 
   def index
-    if params[:status].present?
-      @notifications = Notification.where(status: params[:status]).order(created_at: :desc)
-    else
-      @notifications = Notification.order(created_at: :desc)
-    end
+    @notifications = Notification.order(created_at: :desc)
   end
 
   def show
@@ -19,7 +15,7 @@ class NotificationsController < ApplicationController
   def create
     @notification = Notification.new(notification_params)
     if @notification.save
-      redirect_to notifications_path, notice: "Notificação criada com sucesso."
+      redirect_to notifications_path, notice: "Notificação criada com sucesso!"
     else
       render :new
     end
@@ -30,7 +26,7 @@ class NotificationsController < ApplicationController
 
   def update
     if @notification.update(notification_params)
-      redirect_to notifications_path, notice: "Notificação atualizada com sucesso."
+      redirect_to notifications_path, notice: "Notificação atualizada com sucesso!"
     else
       render :edit
     end
@@ -38,7 +34,12 @@ class NotificationsController < ApplicationController
 
   def destroy
     @notification.destroy
-    redirect_to notifications_path, notice: "Notificação excluída com sucesso."
+    redirect_to notifications_path, notice: "Notificação excluída com sucesso!"
+  end
+
+  def mark_as_sent
+    @notification.update(sent_at: Time.current)
+    redirect_to notifications_path, notice: "Notificação marcada como enviada!"
   end
 
   private
@@ -48,6 +49,6 @@ class NotificationsController < ApplicationController
   end
 
   def notification_params
-    params.require(:notification).permit(:user, :message, :sent_at)
+    params.require(:notification).permit(:user, :message, :description, :status, :sent_at)
   end
 end

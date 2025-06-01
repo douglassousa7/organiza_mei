@@ -1,20 +1,77 @@
-<h1 class="text-3xl font-bold mb-4">Notificações</h1>
+<h1 class="text-3xl font-bold mb-6">Painel de Notificações</h1>
 
-<div class="mb-4">
-  <%= link_to "Todas", notifications_path, class: "mr-2 text-blue-500 hover:underline" %>
-  <%= link_to "Pendentes", notifications_path(status: "pendente"), class: "mr-2 text-blue-500 hover:underline" %>
-  <%= link_to "Enviadas", notifications_path(status: "enviada"), class: "text-blue-500 hover:underline" %>
+<!-- Dashboard de Contagens -->
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8 max-w-4xl mx-auto">
+  <!-- Total de Notificações -->
+  <div class="bg-white shadow rounded p-4">
+    <h2 class="text-xl font-semibold">Total</h2>
+    <p class="text-3xl font-bold">
+      <%= Notification.count %>
+    </p>
+  </div>
+
+  <!-- Notificações Pendentes -->
+  <div class="bg-white shadow rounded p-4">
+    <h2 class="text-xl font-semibold">Pendentes</h2>
+    <p class="text-3xl font-bold text-yellow-500">
+      <%= Notification.where(status: "pendente").count %>
+    </p>
+  </div>
+
+  <!-- Notificações Enviadas -->
+  <div class="bg-white shadow rounded p-4">
+    <h2 class="text-xl font-semibold">Enviadas</h2>
+    <p class="text-3xl font-bold text-green-500">
+      <%= Notification.where(status: "enviada").count %>
+    </p>
+  </div>
+
+  <!-- Últimas 5 Notificações Criadas -->
+  <div class="bg-white shadow rounded p-4">
+    <h2 class="text-xl font-semibold">Últimas 5</h2>
+    <ul class="mt-2 list-disc list-inside">
+      <% Notification.order(created_at: :desc).limit(5).each do |n| %>
+        <li><%= n.user %> – <%= n.created_at.strftime("%d/%m/%Y %H:%M") %></li>
+      <% end %>
+    </ul>
+  </div>
 </div>
 
-<%= link_to 'Nova Notificação', new_notification_path, class: "bg-green-500 text-white px-4 py-2 rounded" %>
+<!-- Botão “Nova Notificação” -->
+<div class="max-w-4xl mx-auto mb-4">
+  <%= link_to 'Nova Notificação', new_notification_path, class: "inline-block bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded" %>
+</div>
 
-<div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-  <% @notifications.each do |notification| %>
-    <div class="border p-4 rounded shadow">
-      <h2 class="text-xl font-bold"><%= notification.user %></h2>
-      <p class="mt-2"><%= notification.message %></p>
-      <p class="mt-2 text-sm text-gray-500">Status: <%= notification.status %></p>
-      <p class="mt-2 text-sm text-gray-500">Criado em: <%= l(notification.created_at, format: :short) %></p>
-    </div>
-  <% end %>
+<!-- Listagem em Tabela (Opcional) -->
+<div class="max-w-4xl mx-auto">
+  <table class="table-auto w-full bg-white shadow rounded">
+    <thead>
+      <tr class="bg-gray-100">
+        <th class="px-4 py-2">Usuário</th>
+        <th class="px-4 py-2">Mensagem</th>
+        <th class="px-4 py-2">Status</th>
+        <th class="px-4 py-2">Enviada em</th>
+        <th class="px-4 py-2">Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @notifications.each do |notification| %>
+        <tr>
+          <td class="border px-4 py-2"><%= notification.user %></td>
+          <td class="border px-4 py-2"><%= notification.message %></td>
+          <td class="border px-4 py-2"><%= notification.status %></td>
+          <td class="border px-4 py-2">
+            <%= notification.sent_at ? notification.sent_at.strftime("%d/%m/%Y %H:%M") : "—" %>
+          </td>
+          <td class="border px-4 py-2 space-x-2">
+            <% if notification.status == "pendente" %>
+              <%= button_to "Marcar como Enviada", mark_as_sent_notification_path(notification), method: :patch, class: "bg-green-500 hover:bg-green-700 text-white px-2 py-1 rounded" %>
+            <% end %>
+            <%= link_to "Editar", edit_notification_path(notification), class: "bg-yellow-500 hover:bg-yellow-700 text-white px-2 py-1 rounded" %>
+            <%= link_to "Excluir", notification_path(notification), method: :delete, data: { confirm: "Tem certeza?" }, class: "bg-red-500 hover:bg-red-700 text-white px-2 py-1 rounded" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>

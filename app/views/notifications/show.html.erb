@@ -1,0 +1,24 @@
+<h1 class="text-3xl font-bold mb-4">Detalhes da Notificação</h1>
+
+<div class="mb-4">
+  <strong>Usuário:</strong>
+  <p><%= @notification.user %></p>
+</div>
+
+<div class="mb-4">
+  <strong>Mensagem:</strong>
+  <p><%= @notification.message %></p>
+</div>
+
+<div class="mb-4">
+  <strong>Status:</strong>
+  <p><%= @notification.status %></p>
+</div>
+
+<div class="mb-4">
+  <strong>Enviada em:</strong>
+  <p><%= @notification.sent_at.present? ? @notification.sent_at.strftime("%d/%m/%Y %H:%M") : "Não enviada" %></p>
+</div>
+
+<%= link_to 'Editar', edit_notification_path(@notification), class: "inline-block bg-yellow-500 text-white px-4 py-2 rounded mr-2" %>
+<%= link_to 'Voltar', notifications_path, class: "inline-block bg-gray-500 text-white px-4 py-2 rounded" %>

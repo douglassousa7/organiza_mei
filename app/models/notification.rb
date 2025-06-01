@@ -10,10 +10,6 @@ class Notification < ApplicationRecord
   private
 
   def set_status
-    self.status = if sent_at.present?
-                   "enviada"
-    else
-                   "pendente"
-    end
+    self.status = sent_at.present? ? "enviada" : "pendente"
   end
 end
